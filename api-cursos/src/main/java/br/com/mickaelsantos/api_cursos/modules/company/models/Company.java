@@ -1,0 +1,63 @@
+package br.com.mickaelsantos.api_cursos.modules.company.models;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.UUID;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.validator.constraints.Length;
+
+import br.com.mickaelsantos.api_cursos.modules.course.models.Course;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+
+@Entity(name = "TB_COMPANY")
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+
+public class Company 
+{
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID uuId;
+
+    @NotBlank(message = "O campo [name] não pode ser vazio!")
+    private String name;
+
+    @Pattern(regexp = "^\\d+$", message = "O campo de [cnpj] não pode conter espaços!")
+    private String cnpj;
+
+    @Email(message = "O campo de [email] deve conter uma e-mail válido")
+    private String email;
+    
+    @NotBlank(message = "O campo de [username] não pode ser vazio!")
+    private String username;
+
+    @Length(min = 10, max = 100, message = "O campo de [password] deve conter no minímo 10 ou no máximo 100 caracteres!")
+    private String password;
+
+    @CreationTimestamp
+    private LocalDateTime created_at;
+
+    @UpdateTimestamp
+    private LocalDateTime updated_at;
+
+    @OneToMany(mappedBy = "company")
+    private List<Course> courses;
+}
+
+
