@@ -2,8 +2,8 @@ package br.com.mickaelsantos.api_cursos.exceptions;
 
 public class CompanyNotFoundException extends RuntimeException
 {
-    public CompanyNotFoundException()
+    public CompanyNotFoundException(String message)
     {
-        super("Empresa não encontrada!");
+        super(message);
     }
 }

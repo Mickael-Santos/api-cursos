@@ -19,7 +19,7 @@ public class DeleteCompanyUseCase
     {
         var companyFound = companyRepository.findById(uuId).
         orElseThrow(() -> {
-            throw new CompanyNotFoundException();
+            throw new CompanyNotFoundException("empresa não encontrada");
         });
 
         try

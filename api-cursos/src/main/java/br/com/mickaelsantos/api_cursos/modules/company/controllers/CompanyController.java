@@ -5,6 +5,7 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,9 +18,9 @@ import br.com.mickaelsantos.api_cursos.modules.company.dtos.CompanyUpdateRequest
 import br.com.mickaelsantos.api_cursos.modules.company.models.Company;
 import br.com.mickaelsantos.api_cursos.modules.company.usecases.CreateCompanyUseCase;
 import br.com.mickaelsantos.api_cursos.modules.company.usecases.DeleteCompanyUseCase;
+import br.com.mickaelsantos.api_cursos.modules.company.usecases.ListCompanyUseCase;
 import br.com.mickaelsantos.api_cursos.modules.company.usecases.UpdateCompanyUseCase;
 import jakarta.validation.Valid;
-import jakarta.websocket.server.PathParam;
 
 @RestController
 @RequestMapping("/company")
@@ -32,26 +33,35 @@ public class CompanyController
     private UpdateCompanyUseCase updateCompanyUseCase;
     @Autowired
     private DeleteCompanyUseCase deleteCompanyUseCase;
+    @Autowired
+    private ListCompanyUseCase listCompanyUseCase;
 
     @PostMapping("/create")
 
     public ResponseEntity<Object> create(@Valid @RequestBody Company company)
     {
- 
-        var result = createCompanyUseCase.execute(company);
+        try
+        {
+            var result = createCompanyUseCase.execute(company);
         
-        var companyDTO = CompanyResponseDTO.builder()
-        .uuId(result.getUuId())
-        .name(result.getName())
-        .cnpj(result.getCnpj())
-        .email(result.getEmail())
-        .username(result.getUsername())
-        .password(result.getPassword())
-        .created_at(result.getCreated_at())
-        .updated_at(result.getUpdated_at())
-        .build();
+            var companyDTO = CompanyResponseDTO.builder()
+            .uuId(result.getUuId())
+            .name(result.getName())
+            .cnpj(result.getCnpj())
+            .email(result.getEmail())
+            .username(result.getUsername())
+            .password(result.getPassword())
+            .created_at(result.getCreated_at())
+            .updated_at(result.getUpdated_at())
+            .build();
         
-        return ResponseEntity.ok().body(companyDTO);
+            return ResponseEntity.ok().body(companyDTO);
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+            return ResponseEntity.badRequest().body(ex.getMessage());
+        } 
 
     }
 
@@ -89,4 +99,24 @@ public class CompanyController
         return ResponseEntity.ok().body(result);
     }
 
+    @GetMapping("/get")
+
+    public ResponseEntity<Object> get()
+    {
+        try
+        {
+            var companies = listCompanyUseCase.execute();
+            return ResponseEntity.ok().body(companies);
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+            return ResponseEntity.badRequest().body(ex.getMessage());
+        }
+    }
+
 }
+
+
+
+

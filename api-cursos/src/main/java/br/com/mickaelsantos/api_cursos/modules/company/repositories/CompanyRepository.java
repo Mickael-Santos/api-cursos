@@ -4,6 +4,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import br.com.mickaelsantos.api_cursos.modules.company.models.Company;
 import java.util.List;
@@ -16,4 +17,8 @@ public interface CompanyRepository extends JpaRepository<Company, UUID>
     Optional<Company> findByUsername(String username);
 
     Optional<Company> findByUuId(UUID uuId);
+
+    @Query(value = "SELECT * FROM TB_COMPANY C", nativeQuery = true)
+    Optional<List<Company>> findAllCompanies();
+
 }

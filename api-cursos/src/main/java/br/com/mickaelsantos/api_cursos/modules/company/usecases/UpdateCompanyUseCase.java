@@ -22,7 +22,7 @@ public class UpdateCompanyUseCase
     {
         var companyFound = companyRepository.findByUuId(company.getUuId())
         .orElseThrow(() -> {
-            throw new CompanyNotFoundException();
+            throw new CompanyNotFoundException("empresa não encontrada!");
         });
 
         companyFound.setName(company.getName());

@@ -18,6 +18,7 @@ public class SecurityConfig
             auth.requestMatchers("/company/create").permitAll()
             .requestMatchers("/company/update").permitAll()
             .requestMatchers("/company/delete").permitAll()
+            .requestMatchers("/company/get").permitAll()
             .requestMatchers("/company/auth/getToken").permitAll()
             .requestMatchers("/student/create").permitAll();
 
