@@ -47,7 +47,7 @@ public class Company
     @NotBlank(message = "O campo de [username] não pode ser vazio!")
     private String username;
 
-    @Length(min = 10, max = 100, message = "O campo de [password] deve conter no minímo 10 ou no máximo 100 caracteres!")
+    @Length(min = 10, max = 100, message = "O campo de [password] deve conter entre 10 e 100 caracteres!")
     private String password;
 
     @CreationTimestamp
