@@ -23,6 +23,8 @@ public class StudentResponseDto
 
     private String email;
 
+    private String username;
+
     private String password;
 
     private LocalDateTime created_at;

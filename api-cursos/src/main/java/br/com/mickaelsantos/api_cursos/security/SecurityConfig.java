@@ -20,7 +20,8 @@ public class SecurityConfig
             .requestMatchers("/company/delete").permitAll()
             .requestMatchers("/company/get").permitAll()
             .requestMatchers("/company/auth/getToken").permitAll()
-            .requestMatchers("/student/create").permitAll();
+            .requestMatchers("/student/create").permitAll()
+            .requestMatchers("student/update").permitAll();
 
             auth.anyRequest().authenticated();
         });
