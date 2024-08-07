@@ -1,5 +1,7 @@
 package br.com.mickaelsantos.api_cursos.modules.company.usecases;
 
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -18,9 +20,9 @@ public class UpdateCompanyUseCase
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public Company execute(CompanyUpdateRequestDto company)
+    public Company execute(UUID uuid, CompanyUpdateRequestDto company)
     {
-        var companyFound = companyRepository.findByUuId(company.getUuId())
+        var companyFound = companyRepository.findByUuId(uuid)
         .orElseThrow(() -> {
             throw new CompanyNotFoundException("empresa não encontrada!");
         });

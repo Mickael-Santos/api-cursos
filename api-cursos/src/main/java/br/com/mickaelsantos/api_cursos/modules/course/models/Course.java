@@ -20,7 +20,7 @@ import jakarta.persistence.OneToMany;
 import lombok.Data;
 
 @Data
-@Entity(name = "TB_COURSE")
+@Entity(name = "course")
 public class Course 
 {
     @Id

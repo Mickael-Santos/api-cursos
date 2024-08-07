@@ -23,7 +23,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 
-@Entity(name = "TB_COMPANY")
+@Entity(name = "company")
 @Data
 @Builder
 @NoArgsConstructor

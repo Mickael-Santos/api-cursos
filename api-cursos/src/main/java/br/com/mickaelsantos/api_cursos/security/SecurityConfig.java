@@ -16,12 +16,13 @@ public class SecurityConfig
         http.csrf( csrf -> csrf.disable())
         .authorizeHttpRequests(auth -> {
             auth.requestMatchers("/company/create").permitAll()
-            .requestMatchers("/company/update").permitAll()
+            .requestMatchers("/company/update/{uuid}").permitAll()
             .requestMatchers("/company/delete").permitAll()
             .requestMatchers("/company/get").permitAll()
             .requestMatchers("/company/auth/getToken").permitAll()
             .requestMatchers("/student/create").permitAll()
-            .requestMatchers("student/update").permitAll();
+            .requestMatchers("student/update").permitAll()
+            .requestMatchers("student/get").permitAll();
 
             auth.anyRequest().authenticated();
         });

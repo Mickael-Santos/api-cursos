@@ -1,7 +1,11 @@
 package br.com.mickaelsantos.api_cursos.modules.student.controllers;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -11,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.mickaelsantos.api_cursos.modules.student.dto.StudentResponseDto;
 import br.com.mickaelsantos.api_cursos.modules.student.models.Student;
 import br.com.mickaelsantos.api_cursos.modules.student.usecases.CreateStudentUseCase;
+import br.com.mickaelsantos.api_cursos.modules.student.usecases.ListStudentUseCase;
 import br.com.mickaelsantos.api_cursos.modules.student.usecases.UpdateStudentUseCase;
 import jakarta.validation.Valid;
 
@@ -23,6 +28,9 @@ public class StudentController
 
     @Autowired
     private UpdateStudentUseCase updateStudentUseCase;
+
+    @Autowired
+    private ListStudentUseCase listStudentUseCase;
 
     @PostMapping("/create")
     public ResponseEntity<Object> create(@Valid @RequestBody Student student)
@@ -76,5 +84,40 @@ public class StudentController
             return ResponseEntity.ok().body(ex.getMessage());
         }
     }
+
+    @GetMapping("/get")
+
+    public ResponseEntity<Object> get()
+    {
+        try
+        {
+            List<StudentResponseDto> studentsDTO = new ArrayList<>();
+            var students = listStudentUseCase.execute();
+            for (Student student : students) 
+            {
+                var studentDTO = StudentResponseDto.builder()
+                .uuId(student.getUuId())
+                .name(student.getName())
+                .cpf(student.getCpf())
+                .email(student.getEmail())
+                .username(student.getUsername())
+                .password(student.getPassword())
+                .created_at(student.getCreated_at())
+                .updated_at(student.getUpdated_at())
+                .build();
+
+                studentsDTO.add(studentDTO);
+            }
+            return ResponseEntity.ok().body(studentsDTO);
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+            return ResponseEntity.badRequest().body(ex.getMessage());
+        }
+       
+    }
+
+    
 }
 

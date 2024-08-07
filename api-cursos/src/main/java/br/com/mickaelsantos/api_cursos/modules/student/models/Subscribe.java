@@ -14,7 +14,7 @@ import jakarta.persistence.ManyToOne;
 import lombok.Data;
 
 @Data
-@Entity(name = "TB_SUBCRIBE")
+@Entity(name = "subscribe")
 public class Subscribe 
 {
     @Id

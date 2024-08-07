@@ -11,7 +11,7 @@ import jakarta.persistence.OneToMany;
 import lombok.Data;
 
 @Data
-@Entity(name = "TB_CATEGORY")
+@Entity(name = "category")
 public class Category 
 {
     @Id

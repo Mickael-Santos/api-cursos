@@ -4,6 +4,6 @@ public class StudentNotFoundException extends RuntimeException
 {
     public StudentNotFoundException()
     {
-        super("O estudante não está cadastrado");
+        super("Nenhum estudante encontrado...");
     }
 }

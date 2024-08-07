@@ -18,7 +18,7 @@ public interface CompanyRepository extends JpaRepository<Company, UUID>
 
     Optional<Company> findByUuId(UUID uuId);
 
-    @Query(value = "SELECT * FROM TB_COMPANY C", nativeQuery = true)
+    @Query(value = "SELECT * FROM COMPANY", nativeQuery = true)
     Optional<List<Company>> findAllCompanies();
 
 }

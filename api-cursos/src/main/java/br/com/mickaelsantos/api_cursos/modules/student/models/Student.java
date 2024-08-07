@@ -19,7 +19,7 @@ import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
 @Data
-@Entity(name = "TB_STUDENT")
+@Entity(name = "student")
 public class Student 
 {
     @Id
