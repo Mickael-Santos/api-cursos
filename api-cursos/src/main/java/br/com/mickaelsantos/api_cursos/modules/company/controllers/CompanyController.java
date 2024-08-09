@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -17,13 +18,14 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.mickaelsantos.api_cursos.modules.company.dtos.CompanyResponseDTO;
 import br.com.mickaelsantos.api_cursos.modules.company.dtos.CompanyUpdateRequestDto;
 import br.com.mickaelsantos.api_cursos.modules.company.dtos.CreateCompanyRequestDto;
+import br.com.mickaelsantos.api_cursos.modules.company.dtos.ToggleCompanyResponseDto;
 import br.com.mickaelsantos.api_cursos.modules.company.models.Company;
 import br.com.mickaelsantos.api_cursos.modules.company.usecases.CreateCompanyUseCase;
 import br.com.mickaelsantos.api_cursos.modules.company.usecases.DeleteCompanyUseCase;
 import br.com.mickaelsantos.api_cursos.modules.company.usecases.ListCompanyUseCase;
+import br.com.mickaelsantos.api_cursos.modules.company.usecases.ToggleCompanyUseCase;
 import br.com.mickaelsantos.api_cursos.modules.company.usecases.UpdateCompanyUseCase;
 import jakarta.validation.Valid;
-import jakarta.websocket.server.PathParam;
 
 @RestController
 @RequestMapping("/company")
@@ -38,6 +40,8 @@ public class CompanyController
     private DeleteCompanyUseCase deleteCompanyUseCase;
     @Autowired
     private ListCompanyUseCase listCompanyUseCase;
+    @Autowired
+    private ToggleCompanyUseCase toggleCompanyUseCase;
 
     @PostMapping("/create")
 
@@ -63,6 +67,7 @@ public class CompanyController
             .email(result.getEmail())
             .username(result.getUsername())
             .password(result.getPassword())
+            .active(result.isActive())
             .created_at(result.getCreated_at())
             .updated_at(result.getUpdated_at())
             .build();
@@ -134,6 +139,25 @@ public class CompanyController
         }
 
         return ResponseEntity.ok().body(result);
+    }
+
+    @PatchMapping("/active/{uuid}")
+
+    public ResponseEntity<Object> active(@PathVariable UUID uuid, @RequestParam boolean active)
+    {
+        try
+        {
+            var result = toggleCompanyUseCase.execute(uuid, active);
+            var resultDTO = new ToggleCompanyResponseDto(result.getName(), result.isActive());
+    
+            return ResponseEntity.ok().body(resultDTO);
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+            return ResponseEntity.badRequest().body(ex.getMessage());
+        }
+       
     }
 
 }

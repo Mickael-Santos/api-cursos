@@ -50,6 +50,8 @@ public class Company
     @Length(min = 10, max = 100, message = "O campo de [password] deve conter entre 10 e 100 caracteres!")
     private String password;
 
+    private boolean active;
+
     @CreationTimestamp
     private LocalDateTime created_at;
 

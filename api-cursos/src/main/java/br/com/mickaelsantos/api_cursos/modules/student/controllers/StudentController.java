@@ -2,19 +2,25 @@ package br.com.mickaelsantos.api_cursos.modules.student.controllers;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
+import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.mickaelsantos.api_cursos.modules.student.dto.DeleteStudentResponseDto;
 import br.com.mickaelsantos.api_cursos.modules.student.dto.StudentResponseDto;
 import br.com.mickaelsantos.api_cursos.modules.student.models.Student;
 import br.com.mickaelsantos.api_cursos.modules.student.usecases.CreateStudentUseCase;
+import br.com.mickaelsantos.api_cursos.modules.student.usecases.DeleteStudentUseCase;
 import br.com.mickaelsantos.api_cursos.modules.student.usecases.ListStudentUseCase;
 import br.com.mickaelsantos.api_cursos.modules.student.usecases.UpdateStudentUseCase;
 import jakarta.validation.Valid;
@@ -25,12 +31,12 @@ public class StudentController
 {
     @Autowired
     private CreateStudentUseCase createStudentUseCase;
-
     @Autowired
     private UpdateStudentUseCase updateStudentUseCase;
-
     @Autowired
     private ListStudentUseCase listStudentUseCase;
+    @Autowired
+    private DeleteStudentUseCase deleteStudentUseCase;
 
     @PostMapping("/create")
     public ResponseEntity<Object> create(@Valid @RequestBody Student student)
@@ -116,6 +122,31 @@ public class StudentController
             return ResponseEntity.badRequest().body(ex.getMessage());
         }
        
+    }
+
+    @DeleteMapping("/delete/{uuid}")
+    public ResponseEntity<Object> delete(@PathVariable UUID uuid)
+    {
+        try
+        {
+            deleteStudentUseCase.execute(uuid); 
+            var resultOfDelete = DeleteStudentResponseDto.builder()
+            .message("Estudante deletado com sucesso!")
+            .isDeleted(true)
+            .build();
+
+            return ResponseEntity.ok().body(resultOfDelete);
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+            var resultOfDelete = DeleteStudentResponseDto.builder()
+            .message("Ocorreu um problema ao tentar deletar o estudante")
+            .isDeleted(false)
+            .build();
+            return ResponseEntity.badRequest().body(resultOfDelete + " " + ex.getMessage());
+        }
+        
     }
 
     

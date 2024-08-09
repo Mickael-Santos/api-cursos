@@ -18,4 +18,6 @@ public interface StudentRepository extends JpaRepository<Student, UUID>
 
      @Query(value = "SELECT * FROM STUDENT", nativeQuery = true)
      Optional<List<Student>> findAllStudents();
+
+     void deleteById(UUID uuid);
 }

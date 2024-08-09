@@ -23,6 +23,7 @@ public class AuthCompanyController
 
     public ResponseEntity<Object> getToken(@RequestBody AuthCompanyDto authCompanyDto)
     {
+
         try
         {
             var result = authCompanyUseCase.execute(authCompanyDto);
@@ -32,5 +33,6 @@ public class AuthCompanyController
         {
             return ResponseEntity.badRequest().body(ex.getMessage());
         }
+
     }
 }

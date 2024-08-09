@@ -22,7 +22,9 @@ public class SecurityConfig
             .requestMatchers("/company/auth/getToken").permitAll()
             .requestMatchers("/student/create").permitAll()
             .requestMatchers("student/update").permitAll()
-            .requestMatchers("student/get").permitAll();
+            .requestMatchers("student/get").permitAll()
+            .requestMatchers("student/delete/{uuid}").permitAll()
+            .requestMatchers("company/active/{uuid}").permitAll();
 
             auth.anyRequest().authenticated();
         });

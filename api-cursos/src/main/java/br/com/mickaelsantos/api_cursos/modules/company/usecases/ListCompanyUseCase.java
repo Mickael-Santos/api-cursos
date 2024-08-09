@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import br.com.mickaelsantos.api_cursos.exceptions.CompanyNotFoundException;
 import br.com.mickaelsantos.api_cursos.modules.company.dtos.CompanyResponseDTO;
-import br.com.mickaelsantos.api_cursos.modules.company.models.Company;
 import br.com.mickaelsantos.api_cursos.modules.company.repositories.CompanyRepository;
 
 @Service
@@ -34,6 +33,7 @@ public class ListCompanyUseCase
             companyResponseDTO.setEmail(x.getEmail());
             companyResponseDTO.setUsername(x.getUsername());
             companyResponseDTO.setPassword(x.getPassword());
+            companyResponseDTO.setActive(x.isActive());
             companyResponseDTO.setCreated_at(x.getCreated_at());
             companyResponseDTO.setUpdated_at(x.getUpdated_at());
 

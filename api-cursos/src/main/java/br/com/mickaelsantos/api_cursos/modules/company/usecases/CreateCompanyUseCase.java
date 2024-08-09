@@ -37,6 +37,7 @@ public class CreateCompanyUseCase
         company.setEmail(companyDTO.getEmail());
         company.setUsername(companyDTO.getUsername());
         company.setPassword(companyDTO.getPassword());
+        company.setActive(true);
 
         var password = passwordEncoder.encode(company.getPassword());
         company.setPassword(password);
