@@ -28,10 +28,10 @@ public class AuthCompanyUseCase
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @Value("${security.token.secret}")
+    @Value("${security.company.secret}")
     private String secretKey;
 
-    @Value("${security.token.issuer}")
+    @Value("${security.api.issuer}")
     private String issuer;
 
     public AuthCompanyResponseDto execute(AuthCompanyDto authCompanyDto) throws AuthenticationException

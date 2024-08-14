@@ -16,6 +16,8 @@ public interface StudentRepository extends JpaRepository<Student, UUID>
 
      Optional<Student> findByUuId(UUID uuId);
 
+     Optional<Student> findByUsername(String username);
+
      @Query(value = "SELECT * FROM STUDENT", nativeQuery = true)
      Optional<List<Student>> findAllStudents();
 
