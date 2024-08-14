@@ -19,12 +19,14 @@ public class SecurityConfig
             .requestMatchers("/company/update/{uuid}").permitAll()
             .requestMatchers("/company/delete").permitAll()
             .requestMatchers("/company/get").permitAll()
+            .requestMatchers("company/active/{uuid}").permitAll()
             .requestMatchers("/company/auth/getToken").permitAll()
             .requestMatchers("/student/create").permitAll()
             .requestMatchers("student/update").permitAll()
             .requestMatchers("student/get").permitAll()
             .requestMatchers("student/delete/{uuid}").permitAll()
-            .requestMatchers("company/active/{uuid}").permitAll();
+            .requestMatchers("student/active/{uuid}/{active}").permitAll();
+            
 
             auth.anyRequest().authenticated();
         });

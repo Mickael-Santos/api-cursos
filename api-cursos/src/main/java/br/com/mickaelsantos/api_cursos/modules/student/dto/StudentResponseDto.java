@@ -27,6 +27,8 @@ public class StudentResponseDto
 
     private String password;
 
+    private boolean active;
+
     private LocalDateTime created_at;
 
     private LocalDateTime updated_at;

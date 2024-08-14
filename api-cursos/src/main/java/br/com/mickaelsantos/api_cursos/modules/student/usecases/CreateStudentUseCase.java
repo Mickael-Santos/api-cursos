@@ -25,6 +25,7 @@ public class CreateStudentUseCase
         });
 
         var password = passwordEncoder.encode(student.getPassword());
+        student.setActive(true);
         student.setPassword(password);
         
         var createdStudent = studentRepository.save(student);

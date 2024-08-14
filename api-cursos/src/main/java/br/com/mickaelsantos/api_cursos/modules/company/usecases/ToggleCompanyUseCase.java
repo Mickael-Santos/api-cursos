@@ -15,7 +15,7 @@ public class ToggleCompanyUseCase
     @Autowired
     private CompanyRepository companyRepository;
 
-    public Company execute(UUID uuid, boolean active)
+    public Company execute(UUID uuid, boolean active) 
     {
         var company = companyRepository.findByUuId(uuid)
         .orElseThrow(() -> {
