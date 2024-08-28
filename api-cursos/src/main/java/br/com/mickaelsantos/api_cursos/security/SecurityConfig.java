@@ -27,7 +27,8 @@ public class SecurityConfig
             .requestMatchers("student/delete/{uuid}").permitAll()
             .requestMatchers("student/active/{uuid}/{active}").permitAll()
             .requestMatchers("/student/auth/getToken").permitAll()
-            .requestMatchers("/category/create").permitAll();
+            .requestMatchers("/category/create").permitAll()
+            .requestMatchers("/category/update/{uuid}").permitAll();
             
 
             auth.anyRequest().authenticated();
