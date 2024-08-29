@@ -18,6 +18,10 @@ public interface CategoryRepository extends JpaRepository<Category, UUID>
     Optional<Category> findByName(@Param("name") String name);
 
     Optional<Category> findByUuId(UUID uuId);
+
+    @Query(value = "SELECT * FROM CATEGORY", nativeQuery = true)
+    Optional<List<Category>> findAllCategories();
+    
 }
 
 
