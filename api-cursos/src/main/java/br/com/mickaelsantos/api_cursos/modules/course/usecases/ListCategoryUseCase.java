@@ -27,7 +27,7 @@ public class ListCategoryUseCase
         List<CategoryResponseDto> categoriesDTO = new ArrayList<>();
         for(Category category : categories)
         {
-            var categoryDTO = new CategoryResponseDto().builder()
+            var categoryDTO = CategoryResponseDto.builder()
             .uuId(category.getUuId())
             .name(category.getName())
             .build();
