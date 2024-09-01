@@ -20,6 +20,8 @@ public class Category
 
     private String name;
 
+    private boolean active;
+
     @OneToMany(mappedBy = "category")
     private List<Course> courses;
 }

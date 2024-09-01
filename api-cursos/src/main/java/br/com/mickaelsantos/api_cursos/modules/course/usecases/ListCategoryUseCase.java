@@ -30,6 +30,7 @@ public class ListCategoryUseCase
             var categoryDTO = CategoryResponseDto.builder()
             .uuId(category.getUuId())
             .name(category.getName())
+            .active(category.isActive())
             .build();
 
             categoriesDTO.add(categoryDTO);

@@ -2,14 +2,17 @@ package br.com.mickaelsantos.api_cursos.modules.course.controllers;
 
 import java.util.UUID;
 
+import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestClient.ResponseSpec;
 
@@ -18,7 +21,9 @@ import br.com.mickaelsantos.api_cursos.modules.course.models.Category;
 import br.com.mickaelsantos.api_cursos.modules.course.usecases.CreateCategoryUseCase;
 import br.com.mickaelsantos.api_cursos.modules.course.usecases.UpdateCategoryUseCase;
 import br.com.mickaelsantos.api_cursos.modules.course.usecases.ListCategoryUseCase;
+import br.com.mickaelsantos.api_cursos.modules.course.usecases.ToggleCategoryUseCase;
 import jakarta.validation.Valid;
+import jakarta.websocket.server.PathParam;
 
 @RestController
 @RequestMapping("/category")
@@ -31,6 +36,8 @@ public class CategoryController
     private UpdateCategoryUseCase updateCategoryUseCase;
     @Autowired
     private ListCategoryUseCase listCategoryUseCase;
+    @Autowired
+    private ToggleCategoryUseCase toggleCategoryUseCase;
 
 
     @PostMapping("/create")
@@ -74,6 +81,22 @@ public class CategoryController
         try
         {
             var result = listCategoryUseCase.execute();
+            return ResponseEntity.ok().body(result);
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+            return ResponseEntity.badRequest().body(ex.getMessage());
+        }
+    }
+
+    @PatchMapping("/toggle/{uuid}")
+
+    public ResponseEntity<Object> toggle(@PathVariable UUID uuid, @RequestParam boolean status)
+    {
+        try
+        {
+            var result = toggleCategoryUseCase.execute(uuid, status);
             return ResponseEntity.ok().body(result);
         }
         catch(Exception ex)

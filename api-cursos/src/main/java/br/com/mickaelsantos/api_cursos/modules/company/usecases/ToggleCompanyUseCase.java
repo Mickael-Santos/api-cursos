@@ -15,14 +15,14 @@ public class ToggleCompanyUseCase
     @Autowired
     private CompanyRepository companyRepository;
 
-    public Company execute(UUID uuid, boolean active) 
+    public Company execute(UUID uuid, boolean status) 
     {
         var company = companyRepository.findByUuId(uuid)
         .orElseThrow(() -> {
             throw new CompanyNotFoundException("Nenhuma empresa encontrada!");
         });
 
-        company.setActive(active);
+        company.setActive(status);
 
         var saveResult = companyRepository.save(company);
         

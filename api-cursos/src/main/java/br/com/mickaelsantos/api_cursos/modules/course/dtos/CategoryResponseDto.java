@@ -18,4 +18,6 @@ public class CategoryResponseDto
 
     private String name;
 
+    private boolean active;
+
 }
