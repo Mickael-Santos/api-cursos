@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestClient.ResponseSpec;
 
 import br.com.mickaelsantos.api_cursos.modules.course.dtos.CategoryUpdateRequestDto;
 import br.com.mickaelsantos.api_cursos.modules.course.models.Category;
@@ -23,7 +22,6 @@ import br.com.mickaelsantos.api_cursos.modules.course.usecases.UpdateCategoryUse
 import br.com.mickaelsantos.api_cursos.modules.course.usecases.ListCategoryUseCase;
 import br.com.mickaelsantos.api_cursos.modules.course.usecases.ToggleCategoryUseCase;
 import jakarta.validation.Valid;
-import jakarta.websocket.server.PathParam;
 
 @RestController
 @RequestMapping("/category")

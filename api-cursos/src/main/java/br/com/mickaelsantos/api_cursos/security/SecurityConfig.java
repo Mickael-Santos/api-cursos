@@ -30,7 +30,8 @@ public class SecurityConfig
             .requestMatchers("/category/create").permitAll()
             .requestMatchers("/category/update/{uuid}").permitAll()
             .requestMatchers("/category/get").permitAll()
-            .requestMatchers("/category/toggle/{uuid}").permitAll();
+            .requestMatchers("/category/toggle/{uuid}").permitAll()
+            .requestMatchers("/course/create").permitAll();
             
 
             auth.anyRequest().authenticated();
