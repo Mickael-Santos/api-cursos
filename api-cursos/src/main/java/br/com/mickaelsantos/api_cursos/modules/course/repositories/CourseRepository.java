@@ -11,9 +11,12 @@ import java.util.UUID;
 
 import br.com.mickaelsantos.api_cursos.modules.course.models.Course;
 
+
+
 public interface CourseRepository extends JpaRepository<Course, UUID>
 { 
     @Query(value = "SELECT * FROM COURSE C WHERE C.NAME  = :name ", nativeQuery = true)
     Optional<Course> findByName(@Param("name") String name);
 
+    Optional<Course> findByUuId(UUID uuId);
 }

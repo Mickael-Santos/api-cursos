@@ -12,17 +12,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.mickaelsantos.api_cursos.interfaces.IController;
+import br.com.mickaelsantos.api_cursos.modules.course.dtos.CourseRequestDto;
 import br.com.mickaelsantos.api_cursos.modules.course.models.Course;
 import br.com.mickaelsantos.api_cursos.modules.course.usecases.CreateCourseUseCase;
+import br.com.mickaelsantos.api_cursos.modules.course.usecases.UpdateCourseUseCase;
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/course")
 
-public class CourseController implements IController<Course, Object>
+public class CourseController implements IController<Course, CourseRequestDto>
 {
     @Autowired
     private CreateCourseUseCase createCourseUseCase;
+    @Autowired
+    private UpdateCourseUseCase updateCourseUseCase;
 
     @PostMapping("/create")
     @Override
@@ -40,10 +44,21 @@ public class CourseController implements IController<Course, Object>
         }
     }
 
+    @PutMapping("/update/{uuid}")
     @Override
-    public ResponseEntity<Object> update(UUID uuid, Object requestDto) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'update'");
+    public ResponseEntity<Object> update(@Valid @PathVariable UUID uuid, @RequestBody CourseRequestDto courseDTO) 
+    {
+        try
+        {
+           var result = updateCourseUseCase.execute(uuid, courseDTO);
+           return ResponseEntity.ok().body(result);
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+            return ResponseEntity.badRequest().body(ex.getMessage());
+        }
+         
     }
 
     @Override

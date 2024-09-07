@@ -30,10 +30,10 @@ public class Course
     private String name;
 
     @ManyToOne()
-    @JoinColumn(name = "category")
+    @JoinColumn(name = "category", insertable = false,updatable = false)
     private Category categoryUuId;
 
-    @Column(name = "category", insertable = false, updatable = false)
+    @Column(name = "category")
     private UUID category;
 
     @ManyToOne()
