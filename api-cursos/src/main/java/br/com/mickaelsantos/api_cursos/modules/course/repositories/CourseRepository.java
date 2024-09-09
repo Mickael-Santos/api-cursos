@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
 import java.util.Optional;
 
 import java.util.UUID;
@@ -19,4 +20,7 @@ public interface CourseRepository extends JpaRepository<Course, UUID>
     Optional<Course> findByName(@Param("name") String name);
 
     Optional<Course> findByUuId(UUID uuId);
+
+    @Query(value = "SELECT * FROM COURSE", nativeQuery = true)
+    Optional<List<Course>> findAllCourses();
 }

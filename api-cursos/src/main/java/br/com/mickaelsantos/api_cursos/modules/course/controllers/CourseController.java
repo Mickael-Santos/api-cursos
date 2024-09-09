@@ -1,9 +1,13 @@
 package br.com.mickaelsantos.api_cursos.modules.course.controllers;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
+import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -13,8 +17,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.mickaelsantos.api_cursos.interfaces.IController;
 import br.com.mickaelsantos.api_cursos.modules.course.dtos.CourseRequestDto;
+import br.com.mickaelsantos.api_cursos.modules.course.dtos.CourseResponseDto;
 import br.com.mickaelsantos.api_cursos.modules.course.models.Course;
 import br.com.mickaelsantos.api_cursos.modules.course.usecases.CreateCourseUseCase;
+import br.com.mickaelsantos.api_cursos.modules.course.usecases.ListCourseUseCase;
 import br.com.mickaelsantos.api_cursos.modules.course.usecases.UpdateCourseUseCase;
 import jakarta.validation.Valid;
 
@@ -27,6 +33,8 @@ public class CourseController implements IController<Course, CourseRequestDto>
     private CreateCourseUseCase createCourseUseCase;
     @Autowired
     private UpdateCourseUseCase updateCourseUseCase;
+    @Autowired
+    private ListCourseUseCase listCourseUseCase;
 
     @PostMapping("/create")
     @Override
@@ -61,10 +69,39 @@ public class CourseController implements IController<Course, CourseRequestDto>
          
     }
 
+    @GetMapping("/get")
     @Override
-    public ResponseEntity<Object> get() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'get'");
+    public ResponseEntity<Object> get() 
+    {
+        try
+        {
+            var results = listCourseUseCase.execute();
+            List<CourseResponseDto> coursesDTO = new ArrayList<>();
+
+            results.forEach(x -> 
+            {
+                var courseDTO = CourseResponseDto.builder()
+                .uuid(x.getUuId())
+                .active(x.isActive())
+                .category(x.getCategory())
+                .name(x.getName())
+                .company(x.getCompany())
+                .created_at(x.getCreated_at())
+                .updated_at(x.getUpdated_at())
+                .build();
+
+                coursesDTO.add(courseDTO);
+            });
+
+            return ResponseEntity.ok().body(coursesDTO);
+
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+            return ResponseEntity.badRequest().body(ex.getMessage());
+        }
+
     }
 
     @Override
