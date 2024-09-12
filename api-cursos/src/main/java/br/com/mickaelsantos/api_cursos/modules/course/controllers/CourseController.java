@@ -7,6 +7,7 @@ import java.util.UUID;
 import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,6 +21,7 @@ import br.com.mickaelsantos.api_cursos.modules.course.dtos.CourseRequestDto;
 import br.com.mickaelsantos.api_cursos.modules.course.dtos.CourseResponseDto;
 import br.com.mickaelsantos.api_cursos.modules.course.models.Course;
 import br.com.mickaelsantos.api_cursos.modules.course.usecases.CreateCourseUseCase;
+import br.com.mickaelsantos.api_cursos.modules.course.usecases.DeleteCourseUseCase;
 import br.com.mickaelsantos.api_cursos.modules.course.usecases.ListCourseUseCase;
 import br.com.mickaelsantos.api_cursos.modules.course.usecases.UpdateCourseUseCase;
 import jakarta.validation.Valid;
@@ -35,6 +37,8 @@ public class CourseController implements IController<Course, CourseRequestDto>
     private UpdateCourseUseCase updateCourseUseCase;
     @Autowired
     private ListCourseUseCase listCourseUseCase;
+    @Autowired
+    private DeleteCourseUseCase deleteCourseUseCase;
 
     @PostMapping("/create")
     @Override
@@ -104,10 +108,20 @@ public class CourseController implements IController<Course, CourseRequestDto>
 
     }
 
+    @DeleteMapping("/delete/{uuid}")
     @Override
-    public ResponseEntity<Object> delete(UUID uuid) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'delete'");
+    public ResponseEntity<Object> delete(@PathVariable UUID uuid) 
+    {
+        try
+        {   
+            deleteCourseUseCase.execute(uuid);
+            return ResponseEntity.ok().body("Curso deletado com sucesso");
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+            return ResponseEntity.badRequest().body(ex.getMessage());
+        }
     }
     
 }

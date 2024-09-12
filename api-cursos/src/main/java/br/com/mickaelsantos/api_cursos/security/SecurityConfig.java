@@ -33,7 +33,8 @@ public class SecurityConfig
             .requestMatchers("/category/toggle/{uuid}").permitAll()
             .requestMatchers("/course/create").permitAll()
             .requestMatchers("/course/update/{uuid}").permitAll()
-            .requestMatchers("/course/get").permitAll();
+            .requestMatchers("/course/get").permitAll()
+            .requestMatchers("/course/delete/{uuid}").permitAll();
 
             auth.anyRequest().authenticated();
         });
