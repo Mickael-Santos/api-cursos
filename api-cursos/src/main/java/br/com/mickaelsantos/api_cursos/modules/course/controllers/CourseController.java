@@ -9,11 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.mickaelsantos.api_cursos.interfaces.IController;
@@ -23,6 +25,7 @@ import br.com.mickaelsantos.api_cursos.modules.course.models.Course;
 import br.com.mickaelsantos.api_cursos.modules.course.usecases.CreateCourseUseCase;
 import br.com.mickaelsantos.api_cursos.modules.course.usecases.DeleteCourseUseCase;
 import br.com.mickaelsantos.api_cursos.modules.course.usecases.ListCourseUseCase;
+import br.com.mickaelsantos.api_cursos.modules.course.usecases.ToggleCourseUseCase;
 import br.com.mickaelsantos.api_cursos.modules.course.usecases.UpdateCourseUseCase;
 import jakarta.validation.Valid;
 
@@ -39,6 +42,8 @@ public class CourseController implements IController<Course, CourseRequestDto>
     private ListCourseUseCase listCourseUseCase;
     @Autowired
     private DeleteCourseUseCase deleteCourseUseCase;
+    @Autowired
+    private ToggleCourseUseCase toggleCourseUseCase;
 
     @PostMapping("/create")
     @Override
@@ -122,6 +127,33 @@ public class CourseController implements IController<Course, CourseRequestDto>
             ex.printStackTrace();
             return ResponseEntity.badRequest().body(ex.getMessage());
         }
+    }
+
+    @PatchMapping("/toggle/{uuid}")
+
+    public ResponseEntity<Object> toggle(@PathVariable UUID uuid, @RequestParam boolean status)
+    {
+        try
+        {   
+            var result = toggleCourseUseCase.execute(uuid, status);
+
+            CourseResponseDto courseDTO  = CourseResponseDto.builder()
+            .uuid(result.getUuId())
+            .category(result.getCategory())
+            .company(result.getCompany())
+            .created_at(result.getCreated_at())
+            .updated_at(result.getUpdated_at())
+            .active(result.isActive())
+            .build();
+
+            return ResponseEntity.ok().body(courseDTO);
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+            return ResponseEntity.badRequest().body(ex.getMessage());
+        }
+
     }
     
 }
