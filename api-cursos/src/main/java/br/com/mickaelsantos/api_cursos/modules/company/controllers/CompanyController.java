@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -25,6 +26,7 @@ import br.com.mickaelsantos.api_cursos.modules.company.usecases.DeleteCompanyUse
 import br.com.mickaelsantos.api_cursos.modules.company.usecases.ListCompanyUseCase;
 import br.com.mickaelsantos.api_cursos.modules.company.usecases.ToggleCompanyUseCase;
 import br.com.mickaelsantos.api_cursos.modules.company.usecases.UpdateCompanyUseCase;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 @RestController
@@ -82,13 +84,16 @@ public class CompanyController
 
     }
 
-    @PutMapping("/update/{uuid}")
+    @PutMapping("/update")
+    @PreAuthorize("hasRole('COMPANY')")
 
-    public ResponseEntity<Object> update(@Valid @PathVariable UUID uuid, @RequestBody CompanyUpdateRequestDto company)
+    public ResponseEntity<Object> update(@Valid @RequestBody CompanyUpdateRequestDto company, HttpServletRequest request)
     {   
         try
         {
-            var result = updateCompanyUseCase.execute(uuid, company);
+            var companyUuId = UUID.fromString(request.getAttribute("company_uuid").toString());
+
+            var result = updateCompanyUseCase.execute(companyUuId, company);
 
             var companyDTO = CompanyResponseDTO.builder()
             .uuId(result.getUuId())
@@ -112,6 +117,7 @@ public class CompanyController
     }
 
     @GetMapping("/get")
+    @PreAuthorize("hasRole('COMPANY')")
 
     public ResponseEntity<Object> get()
     {
@@ -128,10 +134,12 @@ public class CompanyController
     }
 
     @DeleteMapping("/delete")
+    @PreAuthorize("hasRole('COMPANY')")
 
-    public ResponseEntity<Object> delete(@RequestParam("uuId") UUID uuId)
+    public ResponseEntity<Object> delete(HttpServletRequest request)
     {
-        var result = deleteCompanyUseCase.execute(uuId);
+        var companyUuId = UUID.fromString(request.getAttribute("company_uuid").toString());
+        var result = deleteCompanyUseCase.execute(companyUuId);
 
         if(!result.isDeleted())
         {
@@ -141,13 +149,16 @@ public class CompanyController
         return ResponseEntity.ok().body(result);
     }
 
-    @PatchMapping("/active/{uuid}")
+    @PatchMapping("/active")
+    @PreAuthorize("hasRole('COMPANY')")
 
-    public ResponseEntity<Object> active(@PathVariable UUID uuid, @RequestParam boolean active)
+    public ResponseEntity<Object> active(@RequestParam boolean active, HttpServletRequest request)
     {
         try
         {
-            var result = toggleCompanyUseCase.execute(uuid, active);
+            var companyUuId = UUID.fromString(request.getAttribute("company_uuid").toString());
+
+            var result = toggleCompanyUseCase.execute(companyUuId, active);
             var resultDTO = new ToggleCompanyResponseDto(result.getName(), result.isActive());
     
             return ResponseEntity.ok().body(resultDTO);

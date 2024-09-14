@@ -21,6 +21,8 @@ public class DeleteCourseUseCase
             throw new CourseNotFoundException();
         });
 
+
+
         courseRepository.deleteById(uuid);
 
     }
