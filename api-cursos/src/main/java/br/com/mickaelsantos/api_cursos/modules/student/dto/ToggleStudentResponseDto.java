@@ -7,11 +7,11 @@ public class ToggleStudentResponseDto
 {
     private String name;
 
-    private boolean active;
+    private boolean status;
 
-    public ToggleStudentResponseDto(String name, boolean active)
+    public ToggleStudentResponseDto(String name, boolean status)
     {
         this.name = name;
-        this.active = active;
+        this.status = status;
     }
 }

@@ -7,6 +7,7 @@ import java.util.UUID;
 import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -27,8 +28,8 @@ import br.com.mickaelsantos.api_cursos.modules.student.usecases.DeleteStudentUse
 import br.com.mickaelsantos.api_cursos.modules.student.usecases.ListStudentUseCase;
 import br.com.mickaelsantos.api_cursos.modules.student.usecases.ToggleStudentUseCase;
 import br.com.mickaelsantos.api_cursos.modules.student.usecases.UpdateStudentUseCase;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
-import jakarta.websocket.server.PathParam;
 
 @RestController
 @RequestMapping("/student")
@@ -73,12 +74,14 @@ public class StudentController
     }
 
     @PutMapping("/update")
+    @PreAuthorize("hasRole('STUDENT')")
 
-    public ResponseEntity<Object> update(@Valid @RequestBody Student student)
+    public ResponseEntity<Object> update(@Valid @RequestBody Student student, HttpServletRequest request)
     {
         try
         {
-           var result = updateStudentUseCase.execute(student);
+           var studentUuId = UUID.fromString(request.getAttribute("student_uuid").toString());
+           var result = updateStudentUseCase.execute(studentUuId, student);
            var studentDTO = StudentResponseDto.builder()
            .uuId(result.getUuId())
            .name(result.getName())
@@ -101,7 +104,7 @@ public class StudentController
     }
 
     @GetMapping("/get")
-
+    @PreAuthorize("hasRole('STUDENT')")
     public ResponseEntity<Object> get()
     {
         try
@@ -134,12 +137,14 @@ public class StudentController
        
     }
 
-    @DeleteMapping("/delete/{uuid}")
-    public ResponseEntity<Object> delete(@PathVariable UUID uuid)
+    @DeleteMapping("/delete")
+    @PreAuthorize("hasRole('STUDENT')")
+    public ResponseEntity<Object> delete(HttpServletRequest request)
     {
         try
         {
-            deleteStudentUseCase.execute(uuid); 
+            var studentUuId = UUID.fromString(request.getAttribute("student_uuid").toString());
+            deleteStudentUseCase.execute(studentUuId); 
             var resultOfDelete = DeleteStudentResponseDto.builder()
             .message("Estudante deletado com sucesso!")
             .isDeleted(true)
@@ -159,13 +164,15 @@ public class StudentController
         
     }
 
-    @PatchMapping("/active/{uuid}/{active}")
+    @PatchMapping("/toggle")
+    @PreAuthorize("hasRole('STUDENT')")
 
-    public ResponseEntity<Object> active(@PathVariable UUID uuid, @PathVariable boolean active)
+    public ResponseEntity<Object> toggle(@RequestParam boolean status, HttpServletRequest request)
     {
         try
         {
-            var student = toggleStudentUseCase.execute(uuid, active);
+            var studentUuId = UUID.fromString(request.getAttribute("student_uuid").toString());
+            var student = toggleStudentUseCase.execute(studentUuId, status);
             var studentDTO = new ToggleStudentResponseDto(
                 student.getName(),
                 student.isActive());

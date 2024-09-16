@@ -16,6 +16,8 @@ public class SecurityConfig
 {
     @Autowired
     private SecurityCompanyFilter securityCompanyFilter;
+    @Autowired
+    private SecurityStudentFilter securityStudentFilter;
 
 
     @Bean
@@ -27,10 +29,6 @@ public class SecurityConfig
             .requestMatchers("/company/create").permitAll()
             .requestMatchers("/company/auth/getToken").permitAll()
             .requestMatchers("/student/create").permitAll()
-            .requestMatchers("student/update").permitAll()
-            .requestMatchers("student/get").permitAll()
-            .requestMatchers("student/delete/{uuid}").permitAll()
-            .requestMatchers("student/active/{uuid}/{active}").permitAll()
             .requestMatchers("/student/auth/getToken").permitAll()
             .requestMatchers("/category/create").permitAll()
             .requestMatchers("/category/update/{uuid}").permitAll()
@@ -44,10 +42,11 @@ public class SecurityConfig
 
             auth.anyRequest().authenticated();
         })
-        .addFilterBefore(securityCompanyFilter, BasicAuthenticationFilter.class);
+        .addFilterBefore(securityCompanyFilter, BasicAuthenticationFilter.class)
+        .addFilterBefore(securityStudentFilter, BasicAuthenticationFilter.class);
 
         return http.build();
-    } 
+    }
 
     @Bean
 

@@ -15,14 +15,14 @@ public class ToggleStudentUseCase
     @Autowired
     private StudentRepository studentRepository;
 
-    public Student execute(UUID uuid, boolean active) throws StudentNotFoundException
+    public Student execute(UUID uuid, boolean status) throws StudentNotFoundException
     {
         var student = studentRepository.findByUuId(uuid)
         .orElseThrow(() -> {
             throw new StudentNotFoundException();
         });
 
-        student.setActive(active);
+        student.setActive(status);
         var SaveResult = studentRepository.save(student);
         return SaveResult;
 

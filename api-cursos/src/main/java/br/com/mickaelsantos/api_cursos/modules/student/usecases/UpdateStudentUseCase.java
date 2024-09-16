@@ -1,5 +1,7 @@
 package br.com.mickaelsantos.api_cursos.modules.student.usecases;
 
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -17,9 +19,9 @@ public class UpdateStudentUseCase
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public Student execute(Student student)
+    public Student execute(UUID uuid, Student student)
     {
-        var studentFound = studentRepository.findByUuId(student.getUuId())
+        var studentFound = studentRepository.findByUuId(uuid)
         .orElseThrow(()->{
             throw new StudentNotFoundException();
         });
