@@ -5,13 +5,13 @@ import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
 
-public interface IController<T,D> 
+public interface IController<T,D,H> 
 {
-    public ResponseEntity<Object> create(T objeto);
+    public ResponseEntity<Object> create(T objeto, H request);
 
     public ResponseEntity<Object> update(UUID  uuid, D requestDto);
 
-    public ResponseEntity<Object> get();
+    public ResponseEntity<Object> get(H request);
 
     public ResponseEntity<Object> delete(UUID uuid);
 }

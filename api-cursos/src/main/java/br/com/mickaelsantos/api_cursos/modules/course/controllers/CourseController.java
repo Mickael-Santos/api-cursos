@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -26,12 +27,13 @@ import br.com.mickaelsantos.api_cursos.modules.course.usecases.DeleteCourseUseCa
 import br.com.mickaelsantos.api_cursos.modules.course.usecases.ListCourseUseCase;
 import br.com.mickaelsantos.api_cursos.modules.course.usecases.ToggleCourseUseCase;
 import br.com.mickaelsantos.api_cursos.modules.course.usecases.UpdateCourseUseCase;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/course")
+@RequestMapping("company/course")
 
-public class CourseController implements IController<Course, CourseRequestDto>
+public class CourseController implements IController<Course, CourseRequestDto, HttpServletRequest>
 {
     @Autowired
     private CreateCourseUseCase createCourseUseCase;
@@ -45,11 +47,15 @@ public class CourseController implements IController<Course, CourseRequestDto>
     private ToggleCourseUseCase toggleCourseUseCase;
 
     @PostMapping("/create")
+    @PreAuthorize("hasRole('COMPANY')")
     @Override
-    public ResponseEntity<Object> create(@Valid @RequestBody Course course) 
+    public ResponseEntity<Object> create(@Valid @RequestBody Course course, HttpServletRequest request) 
     {
         try
         {
+            var companyUuId = UUID.fromString(request.getAttribute("company_uuid").toString());
+            course.setCompany(companyUuId);
+            course.setActive(true);
             var result = createCourseUseCase.execute(course);
             return ResponseEntity.ok().body(result);
         }
@@ -61,6 +67,7 @@ public class CourseController implements IController<Course, CourseRequestDto>
     }
 
     @PutMapping("/update/{uuid}")
+    @PreAuthorize("hasRole('COMPANY')")
     @Override
     public ResponseEntity<Object> update(@Valid @PathVariable UUID uuid, @RequestBody CourseRequestDto courseDTO) 
     {
@@ -78,12 +85,14 @@ public class CourseController implements IController<Course, CourseRequestDto>
     }
 
     @GetMapping("/get")
+    @PreAuthorize("hasRole('COMPANY')")
     @Override
-    public ResponseEntity<Object> get() 
+    public ResponseEntity<Object> get(HttpServletRequest request) 
     {
         try
         {
-            var results = listCourseUseCase.execute();
+            var companyUuId = UUID.fromString(request.getAttribute("company_uuid").toString());
+            var results = listCourseUseCase.execute(companyUuId);
             List<CourseResponseDto> coursesDTO = new ArrayList<>();
 
             results.forEach(x -> 
@@ -113,6 +122,7 @@ public class CourseController implements IController<Course, CourseRequestDto>
     }
 
     @DeleteMapping("/delete/{uuid}")
+    @PreAuthorize("hasRole('COMPANY')")
     @Override
     public ResponseEntity<Object> delete(@PathVariable UUID uuid) 
     {
@@ -129,6 +139,7 @@ public class CourseController implements IController<Course, CourseRequestDto>
     }
 
     @PatchMapping("/toggle/{uuid}")
+    @PreAuthorize("hasRole('COMPANY')")
 
     public ResponseEntity<Object> toggle(@PathVariable UUID uuid, @RequestParam boolean status)
     {

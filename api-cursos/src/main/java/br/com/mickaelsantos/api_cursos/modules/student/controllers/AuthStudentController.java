@@ -1,7 +1,5 @@
 package br.com.mickaelsantos.api_cursos.modules.student.controllers;
 
-import javax.naming.AuthenticationException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

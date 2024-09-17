@@ -21,6 +21,6 @@ public interface CourseRepository extends JpaRepository<Course, UUID>
 
     Optional<Course> findByUuId(UUID uuId);
 
-    @Query(value = "SELECT * FROM COURSE", nativeQuery = true)
-    Optional<List<Course>> findAllCourses();
+    @Query(value = "SELECT * FROM COURSE C WHERE C.COMPANY = :uuid", nativeQuery = true)
+    Optional<List<Course>> findAllCourses(@Param("uuid") UUID companyUuId);
 }

@@ -15,7 +15,6 @@ public class CreateCourseUseCase
 
     public Course execute(Course course)
     {
-        System.out.println(course.getName());
         courseRepository.findByName(course.getName())
         .ifPresent((item) -> {
             throw new CourseFoundException();
