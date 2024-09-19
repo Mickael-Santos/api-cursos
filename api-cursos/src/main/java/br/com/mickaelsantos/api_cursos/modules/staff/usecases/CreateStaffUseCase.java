@@ -6,7 +6,6 @@ import org.springframework.context.event.EventListener;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import br.com.mickaelsantos.api_cursos.exceptions.StaffFoundException;
 import br.com.mickaelsantos.api_cursos.modules.staff.models.Staff;
 import br.com.mickaelsantos.api_cursos.modules.staff.repositories.StaffRepository;
 
