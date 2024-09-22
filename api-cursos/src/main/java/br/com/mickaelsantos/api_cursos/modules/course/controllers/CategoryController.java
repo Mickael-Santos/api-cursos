@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,6 +39,8 @@ public class CategoryController
 
 
     @PostMapping("/create")
+    @PreAuthorize("hasRole('STAFF')")
+    
     public ResponseEntity<Object> create(@RequestBody Category category)
     {
         try
@@ -55,6 +58,7 @@ public class CategoryController
     }
 
     @PutMapping("/update/{uuid}")
+    @PreAuthorize("hasRole('STAFF')")
 
 
     public ResponseEntity<Object> update(@Valid @PathVariable UUID uuid, @RequestBody CategoryUpdateRequestDto category)
@@ -72,6 +76,7 @@ public class CategoryController
     }
 
     @GetMapping("/get")
+    @PreAuthorize("hasRole('STAFF')")
 
     public ResponseEntity<Object> get()
     {
@@ -88,6 +93,7 @@ public class CategoryController
     }
 
     @PatchMapping("/toggle/{uuid}")
+    @PreAuthorize("hasRole('STAFF')")
 
     public ResponseEntity<Object> toggle(@PathVariable UUID uuid, @RequestParam boolean status)
     {

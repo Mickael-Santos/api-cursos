@@ -1,10 +1,8 @@
 package br.com.mickaelsantos.api_cursos.modules.course.usecases;
 
 import java.util.UUID;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import br.com.mickaelsantos.api_cursos.exceptions.CategoryNotFoundException;
 import br.com.mickaelsantos.api_cursos.modules.course.dtos.CategoryResponseDto;
 import br.com.mickaelsantos.api_cursos.modules.course.dtos.CategoryUpdateRequestDto;
@@ -23,6 +21,7 @@ public class UpdateCategoryUseCase
             throw new CategoryNotFoundException();
         });
 
+        
         companyFound.setName(company.getName());
 
         var categorySaved = categoryRepository.save(companyFound);
@@ -30,8 +29,10 @@ public class UpdateCategoryUseCase
         CategoryResponseDto categoryDTO = CategoryResponseDto.builder()
         .uuId(categorySaved.getUuId())
         .name(categorySaved.getName())
+        .active(categorySaved.isActive())
         .build();
 
         return categoryDTO;
     }
 }
+    

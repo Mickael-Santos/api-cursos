@@ -19,7 +19,7 @@ public class Category
     private UUID uuId;
 
     private String name;
-
+ 
     private boolean active;
 
     @OneToMany(mappedBy = "category")

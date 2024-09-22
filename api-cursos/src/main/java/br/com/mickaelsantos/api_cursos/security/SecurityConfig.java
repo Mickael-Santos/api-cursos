@@ -18,6 +18,8 @@ public class SecurityConfig
     private SecurityCompanyFilter securityCompanyFilter;
     @Autowired
     private SecurityStudentFilter securityStudentFilter;
+    @Autowired
+    private SecurityStaffFilter securityStaffFilter;
 
 
     @Bean
@@ -30,16 +32,13 @@ public class SecurityConfig
             .requestMatchers("/company/auth/getToken").permitAll()
             .requestMatchers("/student/create").permitAll()
             .requestMatchers("/student/auth/getToken").permitAll()
-            .requestMatchers("/category/create").permitAll()
-            .requestMatchers("/category/update/{uuid}").permitAll()
-            .requestMatchers("/category/get").permitAll()
-            .requestMatchers("/category/toggle/{uuid}").permitAll()
             .requestMatchers("/staff/getToken").permitAll();
 
             auth.anyRequest().authenticated();
         })
         .addFilterBefore(securityCompanyFilter, BasicAuthenticationFilter.class)
-        .addFilterBefore(securityStudentFilter, BasicAuthenticationFilter.class);
+        .addFilterBefore(securityStudentFilter, BasicAuthenticationFilter.class)
+        .addFilterBefore(securityStaffFilter, BasicAuthenticationFilter.class);
 
         return http.build();
     }
