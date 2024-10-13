@@ -16,9 +16,10 @@ public class ListCourseUseCase
     @Autowired
     private CourseRepository courseRepository;
 
-    public List<Course> execute(UUID companyUuId)
+    public List<Course> execute(UUID companyUuId, String name, String category)
     {
-        var coursesFound = courseRepository.findAllCourses(companyUuId)
+
+        var coursesFound = courseRepository.findByFilter(companyUuId, name, category)
         .orElseThrow(() ->{
             throw new CourseNotFoundException();
         });

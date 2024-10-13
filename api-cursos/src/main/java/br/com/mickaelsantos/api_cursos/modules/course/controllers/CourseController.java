@@ -86,13 +86,13 @@ public class CourseController implements IController<Course, CourseRequestDto, H
 
     @GetMapping("/get")
     @PreAuthorize("hasRole('COMPANY')")
-    @Override
-    public ResponseEntity<Object> get(HttpServletRequest request) 
+   
+    public ResponseEntity<Object> get(@RequestParam String name,String category, HttpServletRequest request) 
     {
         try
         {
             var companyUuId = UUID.fromString(request.getAttribute("company_uuid").toString());
-            var results = listCourseUseCase.execute(companyUuId);
+            var results = listCourseUseCase.execute(companyUuId, name, category);
             List<CourseResponseDto> coursesDTO = new ArrayList<>();
 
             results.forEach(x -> 
@@ -164,6 +164,5 @@ public class CourseController implements IController<Course, CourseRequestDto, H
             return ResponseEntity.badRequest().body(ex.getMessage());
         }
 
-    }
-    
+    } 
 }

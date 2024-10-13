@@ -28,7 +28,7 @@ public class SecurityCompanyFilter extends OncePerRequestFilter
     {
         
         String headerToken = request.getHeader("Authorization");
-        System.out.println(headerToken);
+       
 
         if(request.getRequestURI().startsWith("/company"))
         {

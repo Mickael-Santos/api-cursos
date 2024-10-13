@@ -11,7 +11,5 @@ public interface IController<T,D,H>
 
     public ResponseEntity<Object> update(UUID  uuid, D requestDto);
 
-    public ResponseEntity<Object> get(H request);
-
     public ResponseEntity<Object> delete(UUID uuid);
 }
