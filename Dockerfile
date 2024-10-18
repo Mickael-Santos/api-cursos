@@ -1,10 +1,16 @@
 FROM ubuntu:latest AS build
 
+WORKDIR /app
+
+COPY ./api-cursos/pom.xml .
+
+COPY ./api-cursos/src ./src
+
 RUN apt-get update
 
 RUN apt-get install openjdk-17-jdk -y
-COPY . .
-COPY pom.xml .
+
+
 
 RUN apt-get install maven -y
 
