@@ -31,3 +31,5 @@ public interface CourseRepository extends JpaRepository<Course, UUID>
     Optional<List<Course>> findByFilter(@Param("uuid") UUID companyUuId, @Param("name") String name, @Param("category") String category);
     
 }
+
+
